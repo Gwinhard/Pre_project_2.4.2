@@ -38,7 +38,7 @@ public class AppConfig {
     }
 
     @Bean
-    public FactoryBean<EntityManagerFactory> entityManagerFactory(){
+    public FactoryBean<EntityManagerFactory> entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean containerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         containerEntityManagerFactoryBean.setDataSource(getDataSource());
         HibernateJpaVendorAdapter adaptor = new HibernateJpaVendorAdapter();
@@ -47,16 +47,13 @@ public class AppConfig {
         props.getProperty("DataBase.driver");
         props.getProperty("hibernate.show_sql");
         props.getProperty("hibernate.hbm2ddl.auto");
-        props.getProperty("hibernate.connection.characterEncoding");
-        props.getProperty("hibernate.connection.CharSet");
-        props.getProperty("hibernate.connection.useUnicode");
         containerEntityManagerFactoryBean.setJpaProperties(props);
         containerEntityManagerFactoryBean.setPackagesToScan("web");
         return containerEntityManagerFactoryBean;
     }
 
     @Bean
-    public TransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
+    public TransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setDataSource(getDataSource());
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);

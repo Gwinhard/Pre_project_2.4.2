@@ -1,5 +1,7 @@
 package web.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import web.model.User;
 
@@ -8,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -20,23 +22,26 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public void updateUser(int id, User editedUser) {
-        User userToBeUpdated = entityManager.find(User.class, id);
-        userToBeUpdated.setName(editedUser.getName());
-        userToBeUpdated.setLastName(editedUser.getLastName());
-        userToBeUpdated.setEmail(editedUser.getEmail());
+    public void updateUser(long id, User editedUser) {
+        editedUser.setId(id);
         entityManager.merge(editedUser);
     }
 
     @Override
-    public void removeUser(int id) {
-        User user = entityManager.find(User.class, id);
-        entityManager.remove(user);
+    public void removeUser(long id) {
+        entityManager.createQuery("delete from User where id = :id")
+                .setParameter("id", id).executeUpdate();
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(long id) {
         return entityManager.find(User.class, id);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return (User) entityManager.createQuery("select user from User user where user.username = :username")
+                .setParameter("username", username).getSingleResult();
     }
 
     @Override
