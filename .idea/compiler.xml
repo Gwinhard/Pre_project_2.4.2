@@ -9,6 +9,7 @@
         <module name="Pre_project_2.4.2" />
         <module name="spring-mvc" />
         <module name="Pre_project_2.3.1" />
+        <module name="pre_project_2.4.2" />
       </profile>
     </annotationProcessing>
   </component>

@@ -28,8 +28,7 @@ public class AdminsController {
     }
 
     @GetMapping("/")
-    public String index(Model model, Principal principal) {
-        model.addAttribute("admin", principal.getName());
+    public String index(Model model) {
         model.addAttribute("users", userService.getAllUsers());
 
         return "/index";
@@ -66,7 +65,9 @@ public class AdminsController {
 
     @GetMapping("/{id}/edit")
     public String editUser(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userService.getUserById(id));
+        User user = userService.getUserById(id);
+        user.setPassword("");
+        model.addAttribute("user", user);
 
         return "/edit";
     }

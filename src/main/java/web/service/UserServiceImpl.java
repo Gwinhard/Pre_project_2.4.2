@@ -10,7 +10,9 @@ import web.dao.UserDao;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -38,7 +40,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public void updateUser(long id, User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != "") {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(userDao.getUserById(id).getPassword());
+        }
         userDao.updateUser(id, user);
     }
 
