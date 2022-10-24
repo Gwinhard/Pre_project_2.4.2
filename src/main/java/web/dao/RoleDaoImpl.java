@@ -12,6 +12,8 @@ import java.util.Set;
 @Repository
 public class RoleDaoImpl implements RoleDao {
 
+
+
     @PersistenceContext
     private EntityManager entityManager;
 
